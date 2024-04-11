@@ -29,6 +29,11 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @Override
+    protected boolean autoIndexCreation() {
+        return true;
+    }
+
+    @Override
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
         builder
                 .credential(MongoCredential.createCredential(Objects.requireNonNull(env.getProperty("spring.data.mongodb.username")),
