@@ -25,7 +25,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public String getDatabaseName(){
-        return "vacancies_db";
+        return env.getProperty("spring.data.mongodb.database");
     }
 
     @Override
