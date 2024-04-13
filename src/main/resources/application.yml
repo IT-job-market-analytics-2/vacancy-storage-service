@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: vacancy-storage-service
+
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: vacancies_db
+      username: analytics_service
+      password: password
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
