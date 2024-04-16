@@ -1,0 +1,12 @@
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Content-Type: application/json
+Authorization: Basic YW5hbHl0aWNzX3NlcnZpY2U6cGFzc3dvcmQ=
+
+{
+  "properties": {
+    "content-type": "application/json"
+  },
+  "routing_key": "imported-vacancies-queue",
+  "payload": "{Test message}",
+  "payload_encoding": "string"
+}
