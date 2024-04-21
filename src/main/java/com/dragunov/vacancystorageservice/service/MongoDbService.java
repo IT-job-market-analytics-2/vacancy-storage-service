@@ -30,16 +30,20 @@ public class MongoDbService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public VacanciesEntity addEntity(VacanciesEntity entity) {
+    public void addEntity(VacanciesEntity entity) {
         try {
+            if (entity == null || entity.getVacancies() == null){
+                throw new NullPointerException();
+            }
             log.info("Set TTL index for VacanciesEntity - {} days", indexTtl);
             mongoTemplate.indexOps(VacanciesEntity.class).ensureIndex(new Index().expire(indexTtl, TimeUnit.DAYS)
                     .on("createdAt", Sort.Direction.ASC));
             log.info("Saving {}", entity);
-            return repository.save(entity);
+            repository.save(entity);
         } catch (DuplicateKeyException e) {
             log.error("Saving fail duplicate key");
-            return entity;
+        } catch (NullPointerException b) {
+            log.error("Save error because entity or vacancies is null");
         }
     }
 
