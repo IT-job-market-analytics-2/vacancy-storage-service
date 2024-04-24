@@ -2,30 +2,36 @@ package com.dragunov.vacancystorageservice.service;
 
 import com.dragunov.vacancystorageservice.dto.Vacancies;
 import com.dragunov.vacancystorageservice.model.VacanciesEntity;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.dao.DuplicateKeyException;
 
 
-
-
-@Component
+@Service
+@Slf4j
+@RequiredArgsConstructor
 public class RabbitListenerService {
+
     private final ConvertService convertService;
+
     private final MongoDbService mongoDbService;
 
+    private final RabbitProducerService rabbitProducerService;
 
-    @Autowired
-    public RabbitListenerService(ConvertService convertService, MongoDbService mongoDbService) {
-        this.convertService = convertService;
-        this.mongoDbService = mongoDbService;
-    }
-
-    @RabbitListener(queues = "${spring.rabbitmq.queue.imported-vacancies}")
-    public void processImportedVacancy(byte[] message) {
-        String messageString = new String(message);
-        Vacancies vacanciesDto = convertService.convertMessageToDto(messageString);
+    @RabbitListener(queues = "${rabbitmq.imported-vacancies}")
+    public void processImportedVacancy(String message) {
+        Vacancies vacanciesDto = convertService.convertMessageToDto(message);
         VacanciesEntity vacanciesEntity = convertService.convertDtoToEntity(vacanciesDto);
-        mongoDbService.addEntity(vacanciesEntity);
+        try {
+            mongoDbService.addEntity(vacanciesEntity);
+            log.info("New vacancy send to new-vacancies-queue");
+            rabbitProducerService.publishNewVacancy(vacanciesDto);
+        } catch (DuplicateKeyException e) {
+            log.error("Saving fail - duplicate");
+        } catch (NullPointerException b) {
+            log.error("Entity is null");
+        }
     }
 }

@@ -24,7 +24,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @Override
-    public String getDatabaseName(){
+    public String getDatabaseName() {
         return env.getProperty("spring.data.mongodb.database");
     }
 
@@ -37,11 +37,11 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
         builder
                 .credential(MongoCredential.createCredential(Objects.requireNonNull(env.getProperty("spring.data.mongodb.username")),
-                            Objects.requireNonNull(env.getProperty("spring.data.mongodb.database")),
-                            Objects.requireNonNull(env.getProperty("spring.data.mongodb.password")).toCharArray()))
-                .applyToClusterSettings(settings  -> {
+                        Objects.requireNonNull(env.getProperty("spring.data.mongodb.database")),
+                        Objects.requireNonNull(env.getProperty("spring.data.mongodb.password")).toCharArray()))
+                .applyToClusterSettings(settings -> {
                     settings.hosts(singletonList(new ServerAddress(env.getProperty("spring.data.mongodb.host"),
-                                                                    env.getProperty("spring.data.mongodb.port", Integer.class))));
+                            env.getProperty("spring.data.mongodb.port", Integer.class))));
                 });
     }
 }
