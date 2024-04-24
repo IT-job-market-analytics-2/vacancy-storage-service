@@ -1,7 +1,4 @@
 spring:
-  application:
-    name: vacancy-storage-service
-
   data:
     mongodb:
       host: 127.0.0.1
@@ -19,7 +16,9 @@ spring:
     username: analytics_service
     password: password
     port: 5672
-    queue:
-      imported-vacancies: imported-vacancies-queue
+
+rabbitmq:
+  imported-vacancies: imported-vacancies-queue
+  report-new-vacancies: new-vacancies-queue
 
 

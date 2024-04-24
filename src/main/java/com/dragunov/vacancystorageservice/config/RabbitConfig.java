@@ -1,9 +1,11 @@
 package com.dragunov.vacancystorageservice.config;
 
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,12 +16,11 @@ import java.util.Objects;
 
 
 @Configuration
-@EnableRabbit
 public class RabbitConfig {
 
     private final Environment env;
 
-    @Value("${spring.rabbitmq.queue.imported-vacancies}")
+    @Value("${rabbitmq.imported-vacancies}")
     private String queueName;
 
     @Autowired
@@ -39,5 +40,11 @@ public class RabbitConfig {
         connectionFactory.setPassword(Objects.requireNonNull(env.getProperty("spring.rabbitmq.password")));
         connectionFactory.setPort(env.getProperty("spring.rabbitmq.port", Integer.class));
         return connectionFactory;
+    }
+    @Bean
+    public RabbitTemplate amqpTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        return rabbitTemplate;
     }
 }
