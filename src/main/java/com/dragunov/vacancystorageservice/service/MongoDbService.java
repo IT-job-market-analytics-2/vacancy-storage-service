@@ -2,8 +2,8 @@ package com.dragunov.vacancystorageservice.service;
 
 import com.dragunov.vacancystorageservice.model.VacanciesEntity;
 import com.dragunov.vacancystorageservice.repository.VacanciesRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -16,35 +16,25 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MongoDbService {
 
     private final VacanciesRepository repository;
+
     private final MongoTemplate mongoTemplate;
 
     @Value("${spring.data.mongodb.ttl_index}")
     private int indexTtl;
 
-    @Autowired
-    public MongoDbService(VacanciesRepository repository, MongoTemplate mongoTemplate) {
-        this.repository = repository;
-        this.mongoTemplate = mongoTemplate;
-    }
-
-    public void addEntity(VacanciesEntity entity) {
-        try {
-            if (entity == null || entity.getVacancies() == null){
-                throw new NullPointerException();
-            }
-            log.info("Set TTL index for VacanciesEntity - {} days", indexTtl);
-            mongoTemplate.indexOps(VacanciesEntity.class).ensureIndex(new Index().expire(indexTtl, TimeUnit.DAYS)
-                    .on("createdAt", Sort.Direction.ASC));
-            log.info("Saving {}", entity);
-            repository.save(entity);
-        } catch (DuplicateKeyException e) {
-            log.error("Saving fail duplicate key");
-        } catch (NullPointerException b) {
-            log.error("Save error because entity or vacancies is null");
+    public void addEntity(VacanciesEntity entity) throws DuplicateKeyException, NullPointerException {
+        if (entity == null || entity.getVacancies() == null) {
+            throw new NullPointerException();
         }
+        mongoTemplate.indexOps(VacanciesEntity.class).ensureIndex(new Index().expire(indexTtl, TimeUnit.DAYS)
+                .on("createdAt", Sort.Direction.ASC));
+        log.info("Set TTL index for VacanciesEntity - {} days", indexTtl);
+        repository.save(entity);
+        log.info("Save success {}", entity);
     }
 
     public List<VacanciesEntity> findAllEntity() {
