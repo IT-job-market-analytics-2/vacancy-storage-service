@@ -1,6 +1,6 @@
 package com.dragunov.vacancystorageservice.service;
 
-import com.dragunov.vacancystorageservice.dto.Vacancies;
+import com.dragunov.vacancystorageservice.dto.Vacancy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +15,7 @@ public class RabbitProducerService {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public void publishNewVacancy(Vacancies vacancies){
-        rabbitTemplate.convertAndSend(producer, vacancies);
+    public void publishNewVacancy(Vacancy vacancy){
+        rabbitTemplate.convertAndSend(producer, vacancy);
     }
 }
