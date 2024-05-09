@@ -1,8 +1,8 @@
 package com.dragunov.vacancystorageservice.service;
 
-import com.dragunov.vacancystorageservice.dto.Vacancies;
-import com.dragunov.vacancystorageservice.mappers.VacanciesEntityMapper;
-import com.dragunov.vacancystorageservice.model.VacanciesEntity;
+import com.dragunov.vacancystorageservice.dto.Vacancy;
+import com.dragunov.vacancystorageservice.mappers.VacancyEntityMapper;
+import com.dragunov.vacancystorageservice.model.VacancyEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,28 +15,28 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ConvertService {
 
-    private final VacanciesEntityMapper vacanciesEntityMapper;
+    private final VacancyEntityMapper vacancyEntityMapper;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public ConvertService(VacanciesEntityMapper vacanciesEntityMapper, ObjectMapper objectMapper) {
-        this.vacanciesEntityMapper = vacanciesEntityMapper;
+    public ConvertService(VacancyEntityMapper vacancyEntityMapper, ObjectMapper objectMapper) {
+        this.vacancyEntityMapper = vacancyEntityMapper;
         this.objectMapper = objectMapper;
     }
 
-    public Vacancies convertMessageToDto(String message) {
+    public Vacancy convertMessageToDto(String message) {
         try {
             log.info("Start convert message to DTO");
             objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-            return objectMapper.readValue(message, Vacancies.class);
+            return objectMapper.readValue(message, Vacancy.class);
         } catch (JsonProcessingException e) {
             log.error("Fail convert message to DTO, message - {}", message);
-            return new Vacancies();
+            return new Vacancy();
         }
     }
 
-    public VacanciesEntity convertDtoToEntity(Vacancies vacanciesDto) {
-        log.info("Start convert DTO to Entity");
-        return vacanciesEntityMapper.toEntity(vacanciesDto);
+    public VacancyEntity convertDtoToEntity(Vacancy vacancyDto) {
+        log.info("Start convert DTO to Entity, DTO - {}", vacancyDto);
+        return vacancyEntityMapper.toEntity(vacancyDto);
     }
 }
