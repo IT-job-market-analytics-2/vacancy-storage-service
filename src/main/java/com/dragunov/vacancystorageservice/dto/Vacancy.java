@@ -9,7 +9,7 @@ import lombok.Data;
 public class Vacancy {
 
     @JsonProperty("id")
-    private String id;
+    private String uuid;
 
     @JsonProperty("name")
     private String name;

@@ -1,11 +1,19 @@
 package com.dragunov.vacancystorageservice.model;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 @Data
+@Document(collection = "vacancy")
+@Slf4j
 public class VacancyEntity {
 
-    private String id;
+    @Indexed(name = "main_index", unique = true)
+    private String uuid;
 
     private String name;
 
@@ -32,4 +40,6 @@ public class VacancyEntity {
     private ExperienceEntity experienceEntity;
 
     private EmploymentEntity employmentEntity;
+
+    private Date deleteAt;
 }
