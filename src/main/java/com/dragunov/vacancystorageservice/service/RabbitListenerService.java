@@ -1,8 +1,6 @@
 package com.dragunov.vacancystorageservice.service;
 
-import com.dragunov.vacancystorageservice.dto.Vacancies;
 import com.dragunov.vacancystorageservice.dto.Vacancy;
-import com.dragunov.vacancystorageservice.model.VacanciesEntity;
 import com.dragunov.vacancystorageservice.model.VacancyEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
