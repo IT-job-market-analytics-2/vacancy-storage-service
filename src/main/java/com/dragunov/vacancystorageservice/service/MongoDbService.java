@@ -3,7 +3,6 @@ package com.dragunov.vacancystorageservice.service;
 import com.dragunov.vacancystorageservice.model.VacancyEntity;
 import com.dragunov.vacancystorageservice.repository.VacancyRepository;
 import com.dragunov.vacancystorageservice.utils.Validator;
-import com.mongodb.client.model.Filters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

@@ -3,6 +3,7 @@ package com.dragunov.vacancystorageservice.service;
 import com.dragunov.vacancystorageservice.dto.Vacancy;
 import com.dragunov.vacancystorageservice.mappers.VacancyEntityMapper;
 import com.dragunov.vacancystorageservice.model.VacancyEntity;
+import com.dragunov.vacancystorageservice.utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,7 @@ public class ConvertService {
 
     public VacancyEntity convertDtoToEntity(Vacancy vacancyDto) {
         log.info("Start convert DTO to Entity, DTO - {}", vacancyDto);
+        vacancyDto.setQuery(Validator.validateQuery(vacancyDto.getQuery()));
         return vacancyEntityMapper.toEntity(vacancyDto);
     }
 }
