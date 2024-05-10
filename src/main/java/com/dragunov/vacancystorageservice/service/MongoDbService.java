@@ -2,6 +2,7 @@ package com.dragunov.vacancystorageservice.service;
 
 import com.dragunov.vacancystorageservice.model.VacancyEntity;
 import com.dragunov.vacancystorageservice.repository.VacancyRepository;
+import com.dragunov.vacancystorageservice.utils.Validator;
 import com.mongodb.client.model.Filters;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,11 +69,12 @@ public class MongoDbService {
     }
 
     public void addQueryToVacancy(String query, VacancyEntity entity) {
-        if (entity.getQuery().contains(query)) {
-            log.info("Set already contains {}", query);
+        String validateQuery = Validator.validateQuery(query);
+        if (entity.getQuery().contains(validateQuery)) {
+            log.info("Set already contains {}", validateQuery);
         } else {
-            entity.getQuery().add(query);
-            log.info("Add {} to set", query);
+            entity.getQuery().add(validateQuery);
+            log.info("Add {} to set", validateQuery);
             updateEntity(entity);
         }
     }
