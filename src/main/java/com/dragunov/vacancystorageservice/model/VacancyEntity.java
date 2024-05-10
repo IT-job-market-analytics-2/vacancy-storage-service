@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Document(collection = "vacancy")
@@ -42,4 +43,7 @@ public class VacancyEntity {
     private EmploymentEntity employmentEntity;
 
     private Date deleteAt;
+
+    private Set<String> query;
+
 }

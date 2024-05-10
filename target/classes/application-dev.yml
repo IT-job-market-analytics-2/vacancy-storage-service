@@ -1,0 +1,25 @@
+server:
+  port: 8082
+spring:
+  data:
+    mongodb:
+      host: vacancies-db
+      port: 27017
+      database: vacancies_db
+      username: analytics_service
+      password: password
+      ttl_index: 14
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+  rabbitmq:
+    host: rabbitmq
+    username: analytics_service
+    password: password
+    port: 5672
+
+rabbitmq:
+  imported-vacancies: imported-vacancies-queue
+  report-new-vacancies: new-vacancies-queue
+
