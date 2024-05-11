@@ -23,19 +23,19 @@ public class Vacancy {
     @JsonProperty("type")
     private Type type;
 
-    @JsonProperty("responseUrl")
+    @JsonProperty("response_url")
     private Object responseUrl;
 
-    @JsonProperty("publishedAt")
+    @JsonProperty("published_at")
     private String publishedAt;
 
-    @JsonProperty("createdAt")
+    @JsonProperty("created_at")
     private String createdAt;
 
     @JsonProperty("archived")
     private Boolean archived;
 
-    @JsonProperty("alternateUrl")
+    @JsonProperty("alternate_url")
     private String alternateUrl;
 
     @JsonProperty("employer")
