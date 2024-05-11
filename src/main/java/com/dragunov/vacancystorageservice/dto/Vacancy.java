@@ -26,10 +26,10 @@ public class Vacancy {
     @JsonProperty("responseUrl")
     private Object responseUrl;
 
-    @JsonProperty("published_at")
+    @JsonProperty("publishedAt")
     private String publishedAt;
 
-    @JsonProperty("created_at")
+    @JsonProperty("createdAt")
     private String createdAt;
 
     @JsonProperty("archived")
@@ -49,4 +49,7 @@ public class Vacancy {
 
     @JsonProperty("employment")
     private Employment employment;
+
+    @JsonProperty("query")
+    private String query;
 }

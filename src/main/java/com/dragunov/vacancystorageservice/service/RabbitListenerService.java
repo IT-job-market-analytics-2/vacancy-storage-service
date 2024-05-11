@@ -25,13 +25,15 @@ public class RabbitListenerService {
     @RabbitListener(queues = "${rabbitmq.imported-vacancies}")
     public void processImportedVacancy(String message) {
         Vacancy vacancyDto = convertService.convertMessageToDto(message);
-        VacancyEntity vacanciesEntity = convertService.convertDtoToEntity(vacancyDto);
+        VacancyEntity vacancyEntity = convertService.convertDtoToEntity(vacancyDto);
         try {
-            mongoDbService.addEntity(vacanciesEntity);
+            mongoDbService.addEntity(vacancyEntity);
             log.info("New vacancy send to new-vacancies-queue");
             rabbitProducerService.publishNewVacancy(vacancyDto);
         } catch (DuplicateKeyException e) {
-            log.error("Saving fail - duplicate");
+            log.warn("Saving fail - duplicate, check query...");
+            VacancyEntity vacancyPresent = mongoDbService.getEntityById(vacancyDto.getUuid()).get();
+            mongoDbService.addQueryToVacancy(vacancyDto.getQuery(), vacancyPresent);
         } catch (ParseException c) {
             log.error("Error vacancy published data parsing");
         } catch (NullPointerException b) {
