@@ -37,7 +37,7 @@ public class RabbitListenerService {
         } catch (ParseException c) {
             log.error("Error vacancy published data parsing");
         } catch (NullPointerException b) {
-            log.error("Entity or entity rows is null");
+            log.error("Entity is null");
         }
     }
 }
